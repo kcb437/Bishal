@@ -1,39 +1,54 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package arithmetic;
 
 import java.util.Scanner;
 
-/** This class takes String input plus,minus,divide and times
- * from user and execute the arithmetic operation
- * change the code to use enum instead String and mention the advantage of enum.
- * @author sivagamasrinivasan
- * 
- */
-public class ArithmeticBase 
-{
- public double x,y;
-    double calculate(double x, double y) 
-        {
-        Scanner sc =new Scanner(System.in);
-        System.out.println("Enter arithmetic operation to Perform: ");
-        String s= sc.next();
-        switch (s.toUpperCase()) 
-        {
-            case "PLUS":
+enum Operation {
+    PLUS,
+    MINUS,
+    TIMES,
+    DIVIDE
+}
+
+public class ArithmeticBase {
+
+    public double calculate(double x, double y, Operation op) {
+        switch (op) {
+            case PLUS:
                 return x + y;
-            case "MINUS":
+            case MINUS:
                 return x - y;
-            case "TIMES":
+            case TIMES:
                 return x * y;
-            case "DIVIDE":
-                return x / y;
+            case DIVIDE:
+                if (y != 0) {
+                    return x / y;
+                } else {
+                    throw new ArithmeticException("Division by zero");
+                }
             default:
-                throw new AssertionError("Unknown operations " + this);
+                throw new AssertionError("Unknown operation: " + op);
         }
     }
-   
+
+    public static void main(String[] args) {
+        ArithmeticBase calculator = new ArithmeticBase();
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter two numbers:");
+        double x = sc.nextDouble();
+        double y = sc.nextDouble();
+
+        System.out.println("Enter arithmetic operation to Perform (PLUS, MINUS, TIMES, DIVIDE): ");
+        String operationStr = sc.next().toUpperCase();
+
+        try {
+            Operation operation = Operation.valueOf(operationStr);
+            double result = calculator.calculate(x, y, operation);
+            System.out.println("Result: " + result);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: Invalid operation");
+        } catch (ArithmeticException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
 }

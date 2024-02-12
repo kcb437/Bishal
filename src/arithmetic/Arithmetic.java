@@ -1,36 +1,42 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package arithmetic;
 
-
 import java.util.Scanner;
-import static java.time.Clock.system;
 
-/** This class calls the method to perform 
- * arithmetic operations based on user input
- * execute the code check the output
- * @author sivagamasrinivasan
- * 
- */
-public class Arithmetic 
-{
+public class Arithmetic {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) 
-    {
-       
-        ArithmeticBase r= new ArithmeticBase();
-        Scanner in= new Scanner(System.in);
-        int n= in.nextInt();
-        int m= in.nextInt();
-        double result = r.calculate(m,n);
-        System.out.println("result :" +result); 
-    
+    public enum Operation {
+        ADDITION, SUBTRACTION, MULTIPLICATION, DIVISION
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int num1 = scanner.nextInt();
+        int num2 = scanner.nextInt();
+        
+        for (Operation op : Operation.values()) {
+            double result = performOperation(num1, num2, op);
+            System.out.println("Result of " + op + ": " + result);
+        }
+    }
+
+    public static double performOperation(int num1, int num2, Operation operation) {
+        switch (operation) {
+            case ADDITION:
+                return num1 + num2;
+            case SUBTRACTION:
+                return num1 - num2;
+            case MULTIPLICATION:
+                return num1 * num2;
+            case DIVISION:
+                if (num2 == 0) {
+                    System.out.println("Error: Division by zero");
+                    return Double.NaN;
+                } else {
+                    return (double) num1 / num2;
+                }
+            default:
+                System.out.println("Invalid operation");
+                return Double.NaN;
+        }
     }
 }
-
